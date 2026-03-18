@@ -65,3 +65,25 @@ function analyzeEmailText(rawText) {
   if (urls.length > 3) {
     add(5, 'Contains many links, which can be used to redirect you to malicious sites.');
   }
+
+
+
+
+
+urls.forEach(url => {
+    try {
+      const u = new URL(url);
+      const host = u.hostname.toLowerCase();
+
+      if (host.startsWith('xn--')) {
+        add(16, `Uses punycode domain (${host}), which can impersonate legitimate sites.`);
+      }
+
+      if (suspiciousDomains.some(d => host === d || host.endsWith(`.${d}`))) {
+        add(12, `Uses a link shortener (${host}), which can hide the real destination.`);
+      }
+
+
+
+  
+ }); 
