@@ -83,7 +83,58 @@ urls.forEach(url => {
         add(12, `Uses a link shortener (${host}), which can hide the real destination.`);
       }
 
+            // Generic look‑alike domain hints
+      if (/(paypa1|paypaI|app1e|m1crosoft|microsoft\-secure|security\-login)/.test(host)) {
+        add(20, `Domain name (${host}) looks similar to a well-known brand — possible impersonation.`);
+      }
+    } catch {
+      // ignore invalid URLs
+    }
 
 
-  
  }); 
+
+
+
+  // Poor writing style can be an indicator (but not always)
+  const exclamationCount = (text.match(/!/g) || []).length;
+  if (exclamationCount >= 3) {
+    add(5, 'Uses excessive exclamation marks, which can be a phishing red flag.');
+  }
+
+  const allCapsWords = (rawText.match(/\b[A-Z]{4,}\b/g) || []).length;
+  if (allCapsWords >= 3) {
+    add(4, 'Contains many ALL‑CAPS words, which can indicate a scammy tone.');
+  }
+
+  // Very short + very high pressure + link → strong suspicion
+  const wordCount = (rawText.match(/\b\w+\b/g) || []).length;
+  if (wordCount < 40 && urgencyMatches > 0 && urls.length > 0) {
+    add(10, 'Short message with urgency and a link — common pattern in phishing emails.');
+  }
+
+  // Lower private / friendly indicators slightly (but never below zero)
+  if (/^hi\s+[a-z]+/i.test(rawText) || /dear\s+[a-z]+/i.test(rawText)) {
+    score -= 4;
+    reasons.push('Has a personal greeting, which is more typical of legitimate email (but not guaranteed).');
+  }
+
+  if (score < 0) score = 0;
+  if (score > 100) score = 100;
+
+  let level = 'low';
+  if (score >= 35 && score < 70) level = 'medium';
+  if (score >= 70) level = 'high';
+
+  if (reasons.length === 0) {
+    reasons.push('No obvious phishing indicators found. Still be careful with links and attachments.');
+  }
+
+  return { score, level, reasons };
+}
+
+// Expose a safe global for the popup script.
+window.PhishingDetector = {
+  analyzeEmailText
+};
+
