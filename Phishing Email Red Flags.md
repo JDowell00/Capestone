@@ -1,4 +1,4 @@
-#Phishing Email Red Flags 
+Phishing Email Red Flags
 
 When reviewing emails, look for these common warning signs that may indicate a phishing attack:
 
