@@ -6,7 +6,7 @@ Goal is to make a phishing detection extension that scans emails for risk of phi
 
 Phishing Detector is a simple, client‑side Chrome extension that helps you **analyze email text for common phishing indicators** using lightweight, explainable rules. It does **not** guarantee safety, but it can highlight obviously risky patterns.
 
-> ⚠️ **Important:** This tool is heuristic only. Always treat unexpected emails, links, and attachments with caution, even if this extension shows a low‑risk score.
+> ⚠️ **Important:** This tool is heuristic only. Always treat unexpected emails, links, and attachments with caution, even if this extension shows a low‑risk score. This tool is still far from perfect it should be used to make educated guesses. 
 
 ---
 
